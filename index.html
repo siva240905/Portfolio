@@ -10,6 +10,8 @@
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
   
@@ -1066,12 +1068,141 @@
   z-index: 2;
 }
 
-  </style>  */
+/* Scroll Progress Bar */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #00ff66, #66ff99);
+  width: 0%;
+  z-index: 10000;
+  box-shadow: 0 0 10px rgba(0,255,102,0.8);
+  transition: width 0.1s ease-out;
+}
+
+/* Project Filters */
+.project-filters {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.filter-btn {
+  background: transparent;
+  border: 2px solid rgba(0,255,102,0.3);
+  color: #fff;
+  padding: 8px 22px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: #00ff66;
+  color: #000;
+  border-color: #00ff66;
+  box-shadow: 0 0 15px rgba(0,255,102,0.5);
+}
+.filter-btn:focus {
+  outline: none;
+  box-shadow: 0 0 15px rgba(0,255,102,0.5);
+}
+
+/* Skill Box Icon */
+.skill-icon {
+  font-size: 40px;
+  color: #00ff66;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+.skill-box:hover .skill-icon {
+  transform: scale(1.18);
+  color: #66ff99;
+}
+
+/* Theme Switcher Widget */
+.theme-switcher {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.theme-toggle-btn {
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 2px solid var(--theme-color, #00ff66);
+  color: var(--theme-color, #00ff66);
+  border-radius: 50%;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  transition: all 0.35s ease;
+}
+.theme-toggle-btn:hover {
+  transform: rotate(45deg);
+  box-shadow: 0 0 20px var(--theme-color, #00ff66);
+}
+.theme-menu {
+  background: rgba(10, 10, 10, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  animation: themeMenuFade 0.3s ease forwards;
+}
+.theme-menu h6 {
+  color: #fff;
+  font-size: 11px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+.theme-options {
+  display: flex;
+  gap: 10px;
+}
+.theme-dot {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+.theme-dot:hover, .theme-dot.active {
+  transform: scale(1.25);
+  border-color: #fff;
+}
+@keyframes themeMenuFade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+  </style>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
+
+<!-- SCROLL PROGRESS BAR -->
+<div id="scroll-progress"></div>
 
 <!-- FIRE FLY BACKGROUND -->
 <div id="firefly-container"></div>
@@ -1088,7 +1219,7 @@
       <ul class="navbar-nav ml-auto">
   <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
   <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
-  <a href="#resume" class="nav-link">Resume</a>
+  <li class="nav-item"><a href="#resume" class="nav-link">Resume</a></li>
   <li class="nav-item"><a href="#projects" class="nav-link">Projects</a></li>
   <li class="nav-item"><a href="#skills" class="nav-link">Skills</a></li>
   <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
@@ -1218,7 +1349,7 @@
       </div>
     </div>
  <div class="text-center mb-5">
-  <a href="Siva Resume.docx" download class="btn btn-resume">
+  <a href="723723205047_sivakumar_resume.pdf" download class="btn btn-resume">
     📄 Download Resume (PDF)
   </a>
 </div>
@@ -1228,12 +1359,19 @@
 <!-- PROJECTS -->
 <section id="projects" class="section project-section">
   <div class="container">
-    <h2 class="text-center mb-5">My Projects</h2>
+    <h2 class="text-center mb-4">My Projects</h2>
+    
+    <!-- Project Filters -->
+    <div class="project-filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="web-dev">Web Development</button>
+      <button class="filter-btn" data-filter="ds-ml">Data Science & ML</button>
+    </div>
 
     <div class="row">
 
       <!-- Project 1 -->
-      <div class="col-md-6 mb-4">
+      <div class="col-md-6 mb-4 project-item" data-category="ds-ml">
         <div class="project-card">
           <h4>Cricket Data Analysis & Visualization</h4>
           <p>
@@ -1257,7 +1395,7 @@
       </div>
 
       <!-- Project 2 -->
-      <div class="col-md-6 mb-4">
+      <div class="col-md-6 mb-4 project-item" data-category="ds-ml">
         <div class="project-card">
           <h4>Cricket Performance Analysis (ML)</h4>
           <p>
@@ -1276,6 +1414,52 @@
              target="_blank"
              class="project-link">
             View on GitHub →
+          </a>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="col-md-6 mb-4 project-item" data-category="web-dev">
+        <div class="project-card">
+          <h4>Smart Event Entry</h4>
+          <p>
+            A modern, web-based digital ticketing and event check-in system designed to streamline registrations and enable secure QR-code ticket scans.
+          </p>
+
+          <div class="project-tags">
+            <span>React.js</span>
+            <span>JavaScript</span>
+            <span>Bootstrap</span>
+            <span>Responsive Design</span>
+          </div>
+
+          <a href="https://smart-event-entry.vercel.app"
+             target="_blank"
+             class="project-link">
+            Live Demo →
+          </a>
+        </div>
+      </div>
+
+      <!-- Project 4 -->
+      <div class="col-md-6 mb-4 project-item" data-category="web-dev">
+        <div class="project-card">
+          <h4>GovtScheme.AI</h4>
+          <p>
+            An AI-powered government scheme matching portal with a custom eligibility wizard and "Scheme Mitra"—a multilingual conversational chatbot.
+          </p>
+
+          <div class="project-tags">
+            <span>React.js</span>
+            <span>AI Chatbot</span>
+            <span>NLP</span>
+            <span>Multilingual</span>
+          </div>
+
+          <a href="https://govt-scheme-ai.vercel.app"
+             target="_blank"
+             class="project-link">
+            Live Demo →
           </a>
         </div>
       </div>
@@ -1300,15 +1484,19 @@
       <!-- Skill Card -->
       <div class="col-md-3 col-6 mb-4">
         <div class="skill-box">
-          🌐
-          <h5>HTML / CSS / JavaScript</h5>
+          <div class="skill-icon">
+            <i class="fab fa-html5"></i>&nbsp;<i class="fab fa-css3-alt"></i>&nbsp;<i class="fab fa-js"></i>
+          </div>
+          <h5>HTML / CSS / JS</h5>
           <span>Advanced</span>
         </div>
       </div>
 
       <div class="col-md-3 col-6 mb-4">
         <div class="skill-box">
-          ⚡
+          <div class="skill-icon">
+            <i class="fab fa-java"></i>
+          </div>
           <h5>Java</h5>
           <span>Intermediate</span>
         </div>
@@ -1316,7 +1504,9 @@
 
       <div class="col-md-3 col-6 mb-4">
         <div class="skill-box">
-          🐍
+          <div class="skill-icon">
+            <i class="fab fa-python"></i>
+          </div>
           <h5>Python</h5>
           <span>Advanced</span>
         </div>
@@ -1324,7 +1514,9 @@
 
       <div class="col-md-3 col-6 mb-4">
         <div class="skill-box">
-          🤖
+          <div class="skill-icon">
+            <i class="fas fa-robot"></i>
+          </div>
           <h5>Machine Learning</h5>
           <span>Intermediate</span>
         </div>
@@ -1332,7 +1524,9 @@
 
       <div class="col-md-3 col-6 mb-4">
         <div class="skill-box">
-          📊
+          <div class="skill-icon">
+            <i class="fas fa-chart-pie"></i>
+          </div>
           <h5>Data Analysis</h5>
           <span>Pandas, NumPy</span>
         </div>
@@ -1340,7 +1534,9 @@
 
       <div class="col-md-3 col-6 mb-4">
         <div class="skill-box">
-          📈
+          <div class="skill-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
           <h5>Data Visualization</h5>
           <span>Matplotlib, Seaborn</span>
         </div>
@@ -1348,7 +1544,9 @@
 
       <div class="col-md-3 col-6 mb-4">
         <div class="skill-box">
-          🔗
+          <div class="skill-icon">
+            <i class="fab fa-github"></i>
+          </div>
           <h5>Git & GitHub</h5>
           <span>Version Control</span>
         </div>
@@ -1356,7 +1554,9 @@
 
       <div class="col-md-3 col-6 mb-4">
         <div class="skill-box">
-          🧠
+          <div class="skill-icon">
+            <i class="fas fa-brain"></i>
+          </div>
           <h5>Problem Solving</h5>
           <span>Logical Thinking</span>
         </div>
@@ -1365,8 +1565,21 @@
     </div>
   </div>
 
-
-
+<!-- THEME SWITCHER -->
+<div class="theme-switcher">
+  <div class="theme-menu">
+    <h6>Choose Accent</h6>
+    <div class="theme-options">
+      <span class="theme-dot active" data-color="#00ff66" data-rgb="0, 255, 102" style="background: #00ff66;"></span>
+      <span class="theme-dot" data-color="#af40ff" data-rgb="175, 64, 255" style="background: #af40ff;"></span>
+      <span class="theme-dot" data-color="#00d2ff" data-rgb="0, 210, 255" style="background: #00d2ff;"></span>
+      <span class="theme-dot" data-color="#ff3e3e" data-rgb="255, 62, 62" style="background: #ff3e3e;"></span>
+    </div>
+  </div>
+  <button class="theme-toggle-btn" aria-label="Toggle theme settings">
+    <i class="fas fa-cog"></i>
+  </button>
+</div>
 
 <!-- CONTACT -->
 <section id="contact" class="section contact-section">
@@ -1526,6 +1739,256 @@
   }, 2000);
 </script>
 
+<script>
+  // Scroll Progress Bar
+  window.addEventListener("scroll", () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    document.getElementById("scroll-progress").style.width = scrolled + "%";
+  });
+
+  // Project Filtering
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  const projectItems = document.querySelectorAll(".project-item");
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      // Remove active class from all buttons
+      filterButtons.forEach(b => b.classList.remove("active"));
+      // Add active class to clicked button
+      btn.classList.add("active");
+
+      const filterValue = btn.getAttribute("data-filter");
+
+      projectItems.forEach(item => {
+        if (filterValue === "all" || item.getAttribute("data-category") === filterValue) {
+          item.style.display = "block";
+          // Add a subtle fade-in transition
+          item.style.opacity = "0";
+          setTimeout(() => {
+            item.style.transition = "opacity 0.4s ease";
+            item.style.opacity = "1";
+          }, 50);
+        } else {
+          item.style.display = "none";
+        }
+      });
+    });
+  });
+
+  // Accent Theme Switcher Logic
+  const themeToggleBtn = document.querySelector(".theme-toggle-btn");
+  const themeMenu = document.querySelector(".theme-menu");
+  const themeDots = document.querySelectorAll(".theme-dot");
+
+  themeToggleBtn.addEventListener("click", () => {
+    if (themeMenu.style.display === "flex") {
+      themeMenu.style.display = "none";
+    } else {
+      themeMenu.style.display = "flex";
+    }
+  });
+
+  // Close menu if clicked outside
+  document.addEventListener("click", e => {
+    if (!themeToggleBtn.contains(e.target) && !themeMenu.contains(e.target)) {
+      themeMenu.style.display = "none";
+    }
+  });
+
+  function applyTheme(color, rgb) {
+    document.documentElement.style.setProperty('--theme-color', color);
+    document.documentElement.style.setProperty('--theme-color-rgb', rgb);
+
+    let overrideStyle = document.getElementById("theme-override-styles");
+    if (!overrideStyle) {
+      overrideStyle = document.createElement("style");
+      overrideStyle.id = "theme-override-styles";
+      document.head.appendChild(overrideStyle);
+    }
+
+    overrideStyle.innerHTML = `
+      .custom-navbar .navbar-brand { color: \${color} !important; }
+      .custom-navbar .nav-link::after { background: \${color}; }
+      .custom-navbar .nav-link:hover { color: \${color} !important; }
+      .custom-navbar .navbar-toggler { border-color: \${color}; }
+      
+      .firefly {
+        background: radial-gradient(circle, \${color} 0%, rgba(\${rgb},0.2) 70%);
+      }
+      
+      .hero h1 span { color: \${color}; }
+      .btn-primary { background: \${color}; }
+      .big { color: rgba(\${rgb},0.1); }
+      .about-info span:first-child { color: \${color}; }
+      
+      .resume-wrap {
+        border-left-color: \${color};
+        background: rgba(\${rgb}, 0.08);
+      }
+      .resume-wrap:hover {
+        box-shadow: 0 0 20px rgba(\${rgb},0.3);
+      }
+      .resume-wrap .date { color: \${color}; }
+      
+      .btn-resume { border-color: \${color}; color: \${color}; }
+      .btn-resume:hover { background: \${color}; box-shadow: 0 0 25px rgba(\${rgb},0.6); }
+      
+      @keyframes pulse {
+        0% { box-shadow: 0 0 0 rgba(\${rgb},0.4); }
+        70% { box-shadow: 0 0 20px rgba(\${rgb},0.6); }
+        100% { box-shadow: 0 0 0 rgba(\${rgb},0.4); }
+      }
+      
+      .project-card { border-color: rgba(\${rgb},0.25); }
+      .project-card::before {
+        background: linear-gradient(120deg, transparent, rgba(\${rgb},0.12), transparent);
+      }
+      .project-card:hover { box-shadow: 0 0 35px rgba(\${rgb},0.35); }
+      .project-card h4 { color: \${color}; }
+      .project-tags span { background: rgba(\${rgb},0.15); color: \${color}; }
+      .project-link { color: \${color}; }
+      
+      .skill-card { border-color: rgba(\${rgb},0.25); }
+      .skill-card:hover { box-shadow: 0 0 30px rgba(\${rgb},0.3); }
+      .skill-card h4 { color: \${color}; }
+      .progress-bar { background: linear-gradient(90deg, \${color}, #ffffff); }
+      .soft-skill { border-color: rgba(\${rgb},0.25); }
+      .soft-skill:hover { box-shadow: 0 0 25px rgba(\${rgb},0.35); }
+      
+      .skill-box { border-color: rgba(\${rgb},0.25); }
+      .skill-box h5 { color: \${color}; }
+      .skill-box:hover { box-shadow: 0 0 35px rgba(\${rgb},0.4); }
+      
+      .contact-card { border-color: rgba(\${rgb},0.25); }
+      .contact-card h5 { color: \${color}; }
+      .contact-card a:hover { color: \${color}; }
+      .contact-card:hover { box-shadow: 0 0 35px rgba(\${rgb},0.4); }
+      
+      .cursor-dot { background: \${color}; box-shadow: 0 0 12px rgba(\${rgb},0.9); }
+      .cursor-ring { border-color: rgba(\${rgb},0.6); }
+      .cursor-hover { border-color: \${color} !important; background: rgba(\${rgb},0.12); }
+      
+      .about-card strong { color: \${color}; }
+      .about-card .highlight { color: \${color}; }
+      .about-card:hover { box-shadow: 0 0 35px rgba(\${rgb},0.3); }
+      
+      .about-info-card { border-color: rgba(\${rgb},0.25); }
+      .about-info-card li span:first-child { color: \${color}; }
+      
+      .profile-wrapper {
+        background: linear-gradient(135deg, \${color}, #ffffff);
+        box-shadow: 0 0 25px rgba(\${rgb},0.6), 0 0 50px rgba(\${rgb},0.4);
+      }
+      
+      .neon-hover { border-color: rgba(\${rgb},0.25); }
+      .neon-hover h5 { color: \${color}; }
+      .neon-hover a:hover { color: \${color}; }
+      .neon-hover:hover { box-shadow: 0 0 40px rgba(\${rgb},0.5); }
+      
+      .social-btn:hover { background: \${color}; border-color: \${color}; box-shadow: 0 0 25px rgba(\${rgb},0.6); }
+      
+      .contact-section h2 { color: \${color}; }
+      .contact-box { border-color: rgba(\${rgb},0.25); }
+      .contact-icon { color: \${color}; }
+      .contact-box a:hover { color: \${color}; }
+      .contact-box:hover { box-shadow: 0 0 45px rgba(\${rgb},0.45); }
+      
+      .social-strip a { color: \${color}; border-color: \${color}; }
+      .social-strip a:hover { background: \${color}; box-shadow: 0 0 25px rgba(\${rgb},0.6); }
+      
+      .hero-card { border-color: rgba(\${rgb},0.25); box-shadow: 0 0 60px rgba(\${rgb},0.25); }
+      .hero-title span {
+        background: linear-gradient(90deg, \${color}, #ffffff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .hero-btn.primary { background: \${color}; }
+      .hero-btn.primary:hover { box-shadow: 0 0 30px rgba(\${rgb},0.7); }
+      .hero-btn.outline { border-color: \${color}; color: \${color}; }
+      .hero-btn.outline:hover { background: \${color}; box-shadow: 0 0 30px rgba(\${rgb},0.7); }
+      
+      .hero-photo {
+        background: linear-gradient(135deg, \${color}, #ffffff);
+        box-shadow: 0 0 25px rgba(\${rgb},0.6), 0 0 45px rgba(\${rgb},0.4);
+      }
+      .hero-photo-left {
+        background: linear-gradient(135deg, \${color}, #ffffff);
+        box-shadow: 0 0 30px rgba(\${rgb},0.6), 0 0 60px rgba(\${rgb},0.35);
+      }
+      
+      .hero-new::before {
+        background: radial-gradient(circle at 30% 40%, rgba(\${rgb},0.15), transparent 40%),
+                    radial-gradient(circle at 70% 60%, rgba(\${rgb},0.12), transparent 40%);
+      }
+      
+      #scroll-progress {
+        background: linear-gradient(90deg, \${color}, #ffffff);
+        box-shadow: 0 0 10px rgba(\${rgb},0.8);
+      }
+      
+      .filter-btn {
+        border-color: rgba(\${rgb},0.3);
+      }
+      .filter-btn:hover, .filter-btn.active {
+        background: \${color};
+        border-color: \${color};
+        box-shadow: 0 0 15px rgba(\${rgb},0.5);
+      }
+      
+      .skill-icon { color: \${color}; }
+      .theme-toggle-btn {
+        border-color: \${color};
+        color: \${color};
+      }
+      .theme-toggle-btn:hover {
+        box-shadow: 0 0 20px \${color};
+      }
+    `;
+  }
+
+  themeDots.forEach(dot => {
+    dot.addEventListener("click", () => {
+      themeDots.forEach(d => d.classList.remove("active"));
+      dot.classList.add("active");
+
+      const color = dot.getAttribute("data-color");
+      const rgb = dot.getAttribute("data-rgb");
+
+      applyTheme(color, rgb);
+      localStorage.setItem("portfolio-theme-color", color);
+      localStorage.setItem("portfolio-theme-rgb", rgb);
+    });
+  });
+
+  // Restore Theme on Load
+  const savedColor = localStorage.getItem("portfolio-theme-color");
+  const savedRgb = localStorage.getItem("portfolio-theme-rgb");
+  if (savedColor && savedRgb) {
+    applyTheme(savedColor, savedRgb);
+    themeDots.forEach(d => {
+      if (d.getAttribute("data-color") === savedColor) {
+        d.classList.add("active");
+      } else {
+        d.classList.remove("active");
+      }
+    });
+  }
+  
+  // Custom cursor hover update for new buttons
+  const updatedHoverTargets = document.querySelectorAll(
+    ".theme-toggle-btn, .theme-dot, .filter-btn"
+  );
+  updatedHoverTargets.forEach(el => {
+    el.addEventListener("mouseenter", () => {
+      ring.classList.add("cursor-hover");
+    });
+    el.addEventListener("mouseleave", () => {
+      ring.classList.remove("cursor-hover");
+    });
+  });
+</script>
 
 </body>
 </html>
